@@ -53,18 +53,7 @@ public:
     bool operator!=(BSTIterator<Data> const & other) const {
         return curr->data != other.curr->data;
     }
-    //    bool empty(){
-    //        if (curr == 0) {
-    //            return 1;
-    //        }
-    //        return 0;
-    //    }
-    //    bool isEnd(){
-    //        if (curr->successor() == 0) {
-    //            return 1;
-    //        }
-    //        return 0;
-    //    }
+    
     BSTNode<Data>* getCurr(){//for delete function
         return curr;
     }

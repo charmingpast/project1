@@ -17,12 +17,16 @@ int main() {
     
     /* Create an STL vector of some ints */
     vector<int> v;
-    v.push_back(3);
-    v.push_back(4);
-    v.push_back(1);
+    v.push_back(98);
+    v.push_back(2);
+    v.push_back(96);
+    v.push_back(23);
     v.push_back(100);
-    v.push_back(-33);
-    v.push_back(99);
+    v.push_back(33);
+    v.push_back(95);
+    
+    
+    
     
     /* Create an instance of BST holding int */
     BST<int> b;
@@ -34,7 +38,7 @@ int main() {
     vector<int>::iterator ven = v.end();//Is this an iterator????
     cout<<*ven<<endl;//Test
     
-    
+    vit = v.begin();
     for(; vit != ven; ++vit) {
         // all these inserts are unique, so should return true
         if(! b.insert(*vit) ) {
@@ -43,19 +47,12 @@ int main() {
         }
     }
     
-    //    vit = v.begin();
-    //    for(; vit != ven; ++vit) {
-    //        // all these inserts are duplicates, so should return false
-    //        if( b.insert(*vit) ) {
-    //            cout << "Incorrect return value when re-inserting " << *vit << endl;
-    //            return -1;
-    //        }
-    //    }
-    //cout<<"everything is okay"<<endl;
+    
     
     /* Test size. */
     cout << "Size is: " << b.size() << endl;
     cout<<"V size is "<<v.size()<<endl;
+    b.insert(2);
     
     if(b.size() != v.size()) {
         cout << "... which is incorrect." << endl;
@@ -64,14 +61,14 @@ int main() {
     
     /* Test find return value. */
     vit = v.begin();
-    cout<<"1 everything is okay"<<endl;
+    
     cout<<"begin is "<<*vit<<endl;
     
     BST<int>::iterator en = b.end();
     
-    cout<<"end is "<<*en<<endl;//end() is not correct
-    b.find(50);
-    // b.del(3);
+    cout<<"end is "<<*en<<endl;
+    
+    
     for(; vit != ven; ++vit) {
         if(*(b.find(*vit)) != *vit) {
             cout << "Incorrect return value when finding " << *vit << endl;
@@ -82,7 +79,7 @@ int main() {
     
     /* Sort the vector, to compare with inorder iteration on the BST */
     sort(v.begin(),v.end());
-    cout<<"everything is okay"<<endl;
+    
     
     /* Test BST iterator; should iterate inorder */
     cout << "traversal using iterator:" << endl;
@@ -97,8 +94,9 @@ int main() {
         }
         ++it;
     }
-    
+    b.print();
+    b.remove(33);
+    b.remove(20);
+    b.print();
     cout << "OK." << endl;
-    
-    // cout<<"Everything is okay"<<endl;
 }

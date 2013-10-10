@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
+using namespace std;
 
 template<typename Data>
 class BSTNode {
@@ -38,26 +39,19 @@ public:
         }
         tmp = this;
         BSTNode<Data>* Ptmp = tmp->parent;
+        
         while (Ptmp != 0 && tmp == Ptmp->right) {
             tmp = Ptmp;
             Ptmp = Ptmp->parent;
         }
         return Ptmp;
-        //      if (this->right != 0) {
-        //          this = this->right;
-        //          while (this->left != 0) {
-        //              this = this->left;
-        //          }
-        //          return this;
-        //      }
-        //      else{
-        //          BSTNode<Data>* tmp = this->parent;
-        //          if (tmp != 0 && this == tmp->right) {
-        //              this = tmp;
-        //              tmp = tmp->parent;
-        //          }
-        //          return tmp;
-        //      }
+        
+    }
+    bool isLeft(){ // identify if the current node is its parent's left or right child, using in remove function
+        if(this == 0) {cout<<"This node is null can't determine"<<endl; return 0;}
+        if(this == parent->left )
+            return 1;
+        else return 0;
     }
     
 };

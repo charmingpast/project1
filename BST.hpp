@@ -62,7 +62,10 @@ public:
                 Pcurrent = current;
                 current = current->left;
             }
-            else return 0;
+            else {
+                cout<<"Can't not insert, Duplicate items"<<endl;
+                return 0;
+            }
         }
         if (Pcurrent->data < item) {
             tmp->parent = Pcurrent;
@@ -108,78 +111,69 @@ public:
     //                        }
     //
     //            }
-    //      /** Given a reference to a Data item, insert a copy of it in this BST.
-    //          *  Return  true if the item was added to this BST
-    //          *  as a result of this call to insert,
-    //          *  false if an item equal to this one was already in this BST.
-    //          *  Note: This function should use only the '<' operator when comparing
-    //          *  Data items.
-    //          */ // TODO
+    
     //      virtual bool insert(const Data& item) {
     //              return insertHelper(item, root);
     //
     //          }
-    //    //
-    //    virtual bool del(const Data& item) const{//delete a node
-    //
-    //        //case1: 如果x没有子节点，直接删除x
-    //    //case2: 如果x有一个子节点，x的父节点连结该子节点，删除x
-    //    //case3: 如果x有两个子节点，找出x的后继y，复制y的数据到x，递归调用函数删除y（此时y不可能有左子结点，只可能在//case1,case2返回）
-    //        iterator it = find(item);
-    //        if(it.getCurr() == 0)
-    //        {
-    //            cout<<"No such node to delete"<<endl;return 0;
-    //        }
-    //        BSTNode<Data>* current = it.getCurr();
-    //        BSTNode<Data>* tmp = current->parent;
-    //        if (current->right == 0 && current->left == 0) {
-    //            if (tmp->right == current) {
-    //                delete current; tmp->right = 0;cout<<item<<" Node deleted"<<endl; return 1;
-    //            }
-    //            else {delete current; tmp->left = 0; cout<<item<<" Node deleted"<<endl; return 1;}
-    //        }
-    //        else if (current->right != 0 && current->left ==0) {
-    //            if (tmp->right == current) tmp->right = current->right;
-    //
-    //            else tmp->left = current->right;
-    //            delete current; cout<<item<<" Node deleted"<<endl;return 1;
-    //        }
-    //        else if(current->left != 0 && current->right == 0){
-    //            if(tmp->right == current) tmp->right = current->left;
-    //            else tmp->left = current->left;
-    //            delete current; cout<<item<<" Node deleted"<<endl; return 1;
-    //        }
-    //        BSTNode<Data>* succ = current->successor();
-    //        current->data = succ->data;
-    //        del(current, current->data);
-    //        return 0;
-    //    }
-    //    bool delHelper(BSTNode<Data>* current, const Data& item){
-    //        iterator it = find(item);
-    //        if(it.getCurr() == 0)
-    //        {
-    //            cout<<"No such node to delete"<<endl;return 0;
-    //        }
     
-    //        BSTNode<Data>* tmp = current->parent;
-    //        if (current->right == 0 && current->left == 0) {
-    //            if (tmp->right == current) {
-    //                delete current; tmp->right = 0;cout<<item<<" Node deleted"<<endl; return 1;
-    //            }
-    //            else {delete current; tmp->left = 0; cout<<item<<" Node deleted"<<endl; return 1;}
-    //        }
-    //        else if (current->right != 0 && current->left ==0) {
-    //            if (tmp->right == current) tmp->right = current->right;
+    
     //
-    //            else tmp->left = current->right;
-    //            delete current; cout<<item<<" Node deleted"<<endl;return 1;
-    //        }
-    //        else if(current->left != 0 && current->right == 0){
-    //            if(tmp->right == current) tmp->right = current->left;
-    //            else tmp->left = current->left;
-    //            delete current; cout<<item<<" Node deleted"<<endl; return 1;
-    //        }
-    //    }
+    //    case1: if there is no child, delete it directly
+    //    case2: if there is one child, link the child to its parent and delete it
+    //    case3: if there are two children, find the successor and create a node with the same data of the successor and call the removeHelp function to delete the successor
+    
+    bool remove(const Data& item){
+        iterator it = find(item); // use iterator provided to find the node to delete
+        BSTNode<Data>* current = it.getCurr();
+        if (current == 0) {
+            cout<<"No such item to delete"<<endl; // error control
+            return 0;
+        }
+        if (current->left == 0 || current->right == 0) {
+            removeHelp(current);
+            return 1;
+        }
+        else if (current->left != 0 && current->right != 0){
+            BSTNode<Data>* succ = current->successor();
+            BSTNode<Data>* repl = new BSTNode<Data>(succ->data);
+            
+            repl->left = current->left;
+            repl->right = current->right;
+            removeHelp(succ);
+            return 1;
+        }
+        return 0;
+    }
+    
+    bool removeHelp(BSTNode<Data>* current){// assisting function to remove when there is one or no child
+        
+        BSTNode<Data>* pcurr = current->parent;
+        if (current->right == 0 && current->left == 0) {
+            if (current->isLeft())
+                pcurr->left = 0;
+            else pcurr->right = 0;
+        }
+        else if(current->right == 0 && current->left != 0){
+            if (current->isLeft())
+                pcurr->left =current->left;
+            else
+                pcurr->right = current->left;
+            current->left->parent = pcurr;
+        }
+        else if(current->left == 0 && current->right != 0){
+            if (current->isLeft())
+                pcurr->right = current->right;
+            else
+                pcurr->right = current->right;
+            current->right->parent = pcurr;
+        }
+        delete current;
+        cout<<current->data<<" Node deleted"<<endl;
+        return 1;
+    }
+    
+    
     /** Find a Data item in the BST.
      *  Return an iterator pointing to the item, or pointing past
      *  the last node in the BST if not found.
@@ -207,12 +201,7 @@ public:
      */ // TODO
     unsigned int size() const {
         return isize;
-        //        iterator it = begin();
-        //        unsigned int i = 0;
-        //        for (i = 0; !(++it).empty(); ) {
-        //            i++;
-        //        }
-        //        return ++i;
+        
     }
     
     /** Return true if the BST is empty, else false.
@@ -239,24 +228,22 @@ public:
     /** Return an iterator pointing past the last item in the BST.
      */
     iterator end() const {
-        //        if (root == 0) {
-        //            return 0;
-        //        }
-        //        iterator it = begin();
-        //        //cout<<*it<<endl;
-        //        while (!it.isEnd()) {
-        //            cout<<*it<<endl;
-        //            ++it;
-        //        }
-        //        cout<<*it<<endl;
-        //        return it;
-        return typename BST<Data>::iterator(0);//???
+        
+        return typename BST<Data>::iterator(0);
     }
     
     /** Perform an inorder traversal of this BST.
      */
     void inorder() const {
         inorder(root);
+    }
+    void print(){ // printing  the order of the tree, to verify result
+        iterator i = begin();
+        for (; i.getCurr() != 0; i++) {
+            cout<<i.getCurr()->data<<" ";
+            cout<<i.getCurr()<<endl;
+        }
+        cout<<endl;
     }
     
     
