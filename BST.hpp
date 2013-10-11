@@ -211,7 +211,7 @@ public:
         iterator i = begin();
         for (; i.getCurr() != 0; i++) {
             cout<<i.getCurr()->data<<" ";
-            cout<<i.getCurr()<<endl;
+            
         }
         cout<<endl;
     }
