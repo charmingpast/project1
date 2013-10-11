@@ -85,37 +85,7 @@ public:
         
         return 0;
     }
-    //    bool insertHelper(const Data& item, BSTNode<Data>* node)
-    //        {
-    //                if (node->data == item) {
-    //                        return false;
-    //                    }
-    //                if(node->data > item){
-    //                        if(node->left == NULL){
-    //                                BSTNode<Data>* newNode = new BSTNode<Data>;
-    //                                newNode->data = item;
-    //                                node->left = newNode;
-    //                            }
-    //                        else
-    //                                return insertHelper(item, node->left);
-    //                        }
-    //                //node->data < item
-    //                else{
-    //                        if(node->right == NULL){
-    //                                BSTNode<Data>* newNode = new BSTNode<Data>;
-    //                                newNode->data = item;
-    //                                node->right = newNode;
-    //                            }
-    //                        else
-    //                                return insertHelper(item, node->right);
-    //                        }
-    //
-    //            }
-    
-    //      virtual bool insert(const Data& item) {
-    //              return insertHelper(item, root);
-    //
-    //          }
+
     
     
     //
